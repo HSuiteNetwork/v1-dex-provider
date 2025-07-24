@@ -1,0 +1,17 @@
+{
+  "name": "hsuite_dex_provider",
+  "version": "1.0.0",
+  "description": "hsuite demo to interact with zero-slippage-dex as a provider",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "HbarSuite",
+  "license": "ISC",
+  "dependencies": {
+    "@hashgraph/sdk": "^2.36.0",
+    "axios": "^1.6.0",
+    "decimal.js": "^10.4.3",
+    "socket.io-client": "^4.7.2"
+  }
+}
