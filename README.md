@@ -11,6 +11,24 @@ This project demonstrates how to:
 - Earn provider fees (0.3%) from swap transactions
 - Handle both mainnet and testnet environments
 
+**Important**: This demo shows how to become a **DEX provider** - meaning you provide your own DEX service using HbarSuite's liquidity pools and earn fees on each swap. If you're building normal bots or applications that just need to interact with the pools directly, you don't need an API key or the provider authentication process.
+
+## Use Cases
+
+### DEX Provider (This Demo)
+- **Requires API Key**: Yes
+- **Purpose**: Provide DEX services using HbarSuite's liquidity pools
+- **Benefits**: Earn 0.3% fee on each swap you facilitate
+- **Authentication**: Required WebSocket authentication with Smart Nodes
+- **Target Users**: Businesses/developers wanting to offer DEX services
+
+### Normal Bots/Applications
+- **Requires API Key**: No
+- **Purpose**: Direct interaction with liquidity pools for trading, arbitrage, etc.
+- **Benefits**: Access to zero-slippage swaps and pool data
+- **Authentication**: Standard Hedera account operations
+- **Target Users**: Traders, arbitrage bots, DeFi applications
+
 ## Architecture
 
 The application consists of three main components:
@@ -23,8 +41,10 @@ The application consists of three main components:
 
 - Node.js (v14 or higher)
 - A Hedera account with HBAR balance for testnet/mainnet operations
-- HbarSuite API key for Smart Node access
+- HbarSuite API key for Smart Node access (**only required for DEX providers**)
 - Understanding of Hedera Hashgraph and token operations
+
+**Note**: The API key is only needed if you want to become a DEX provider and earn fees on swaps. For normal bots, trading applications, or direct pool interactions, no API key is required.
 
 ## Installation
 
@@ -43,11 +63,13 @@ npm install
 
 Before running the application, you need to configure your credentials in `index.js`:
 
-### 1. API Key
-Replace the placeholder with your HbarSuite API key:
+### 1. API Key (DEX Providers Only)
+Replace the placeholder with your HbarSuite API key. **This is only required if you want to become a DEX provider and earn fees**:
 ```javascript
 const apiKey = 'YOUR_API_KEY_HERE';
 ```
+
+If you're building normal bots or applications, you can skip the API key and authentication process.
 
 ### 2. Operator Accounts
 Configure your Hedera accounts for both networks:
