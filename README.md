@@ -1,33 +1,65 @@
-# HbarSuite DEX Provider Demo
+# HSuite DEX Provider Demo
 
-A Node.js demonstration application showing how to interact with HbarSuite's zero-slippage DEX (Decentralized Exchange) as a liquidity provider on the Hedera Hashgraph network.
+A Node.js demonstration application showing how to interact with HSuite's zero-slippage DEX (Decentralized Exchange) as a liquidity provider on the Hedera Hashgraph network.
+
+## 🔀 Branch Information
+
+**Current Branch**: `master` - **DEX Provider Implementation**
+- **Target Users**: Businesses wanting to offer DEX services and earn provider fees
+- **Requirements**: HSuite API key and provider whitelisting required
+- **Benefits**: Earn 0.3% fees on facilitated swaps, full HTTP API access
+
+**Alternative Branch**: [`features/programmatic_swaps`](../../tree/features/programmatic_swaps) - **Non-Provider Implementation**
+- **Target Users**: Individual developers, traders, bots, arbitrage systems
+- **Requirements**: Only standard Hedera account (no whitelisting needed)
+- **Benefits**: Direct swap access without provider credentials
+
+## 🚀 Quick Start for Non-Providers
+
+**Want to experiment with programmatic swaps without becoming a provider?**
+
+```bash
+# Switch to the non-provider branch
+git checkout features/programmatic_swaps
+
+# Follow the setup instructions in that branch's README
+npm install
+# Configure your .env file with your Hedera account
+npm start
+```
 
 ## Overview
 
 This project demonstrates how to:
-- Connect to HbarSuite's Smart Node network via WebSocket and REST API
+- Connect to HSuite's Smart Node network via WebSocket and REST API
 - Authenticate as a DEX provider using Hedera account credentials
 - Facilitate token swaps with zero slippage
 - Earn provider fees (0.3%) from swap transactions
 - Handle both mainnet and testnet environments
 
-**Important**: This demo shows how to become a **DEX provider** - meaning you provide your own DEX service using HbarSuite's liquidity pools and earn fees on each swap. If you're building normal bots or applications that just need to interact with the pools directly, you don't need an API key or the provider authentication process.
+**Important**: This demo shows how to become a **DEX provider** - meaning you provide your own DEX service using HSuite's liquidity pools and earn fees on each swap. If you're building normal bots or applications that just need to interact with the pools directly, check out the [`features/programmatic_swaps`](../../tree/features/programmatic_swaps) branch instead.
 
 ## Use Cases
 
-### DEX Provider (This Demo)
-- **Requires API Key**: Yes
-- **Purpose**: Provide DEX services using HbarSuite's liquidity pools
+### DEX Provider (This Branch - Master)
+- **Requires API Key**: ✅ Yes (contact HSuite for whitelisting)
+- **Purpose**: Provide DEX services using HSuite's liquidity pools
 - **Benefits**: Earn 0.3% fee on each swap you facilitate
 - **Authentication**: Required WebSocket authentication with Smart Nodes
-- **Target Users**: Businesses/developers wanting to offer DEX services
+- **API Access**: Full HTTP REST API (read/write operations)
+- **Target Users**: Businesses/developers wanting to offer DEX services to customers
 
-### Normal Bots/Applications
-- **Requires API Key**: No
+### Direct Swaps (Alternative Branch)
+- **Branch**: [`features/programmatic_swaps`](../../tree/features/programmatic_swaps)
+- **Requires API Key**: ❌ No (no whitelisting needed)
 - **Purpose**: Direct interaction with liquidity pools for trading, arbitrage, etc.
 - **Benefits**: Access to zero-slippage swaps and pool data
 - **Authentication**: Standard Hedera account operations
-- **Target Users**: Traders, arbitrage bots, DeFi applications
+- **API Access**: WebSocket for swaps, HTTP for pool data
+- **Target Users**: Individual traders, bots, arbitrage systems, DeFi applications
+
+> **💡 New to HSuite or don't have provider credentials?**  
+> Start with the [`features/programmatic_swaps`](../../tree/features/programmatic_swaps) branch - it's perfect for experimenting and building trading applications without needing special permissions!
 
 ## Architecture
 
@@ -39,12 +71,18 @@ The application consists of three main components:
 
 ## Prerequisites
 
+### For DEX Providers (This Branch)
 - Node.js (v14 or higher)
 - A Hedera account with HBAR balance for testnet/mainnet operations
-- HbarSuite API key for Smart Node access (**only required for DEX providers**)
+- **HSuite API key** for Smart Node access (contact HSuite for whitelisting)
 - Understanding of Hedera Hashgraph and token operations
 
-**Note**: The API key is only needed if you want to become a DEX provider and earn fees on swaps. For normal bots, trading applications, or direct pool interactions, no API key is required.
+### For Direct Swaps (Alternative Branch)
+- Node.js (v14 or higher)
+- A Hedera account with HBAR balance for transaction fees
+- **No API key or whitelisting required** - just checkout [`features/programmatic_swaps`](../../tree/features/programmatic_swaps)
+
+**Note**: If you don't have an HSuite API key or provider status, you can still perform programmatic swaps! Switch to the `features/programmatic_swaps` branch for a complete implementation that works with any Hedera account.
 
 ## Installation
 
@@ -208,9 +246,22 @@ let swapObj = {
 ## Support
 
 For questions or issues:
-- Check HbarSuite documentation
+- Check HSuite documentation
 - Review Hedera SDK documentation
 - Ensure proper network configuration and API key validity
+
+## 🌟 Don't Have Provider Credentials?
+
+If you want to experiment with programmatic swaps but don't have HSuite provider credentials:
+
+1. **Switch to the non-provider branch:**
+   ```bash
+   git checkout features/programmatic_swaps
+   ```
+
+2. **Follow the setup in that branch** - it provides a complete implementation for direct swaps using any Hedera account
+
+3. **No whitelisting required** - perfect for individual developers, trading bots, and DeFi applications
 
 ## License
 
@@ -218,7 +269,7 @@ ISC - See package.json for details
 
 ## Author
 
-HbarSuite
+HSuite
 
 ---
 
