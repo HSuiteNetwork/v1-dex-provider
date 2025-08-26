@@ -102,7 +102,7 @@ npm install
 Before running the application, you need to configure your credentials in `index.js`:
 
 ### 1. API Key (DEX Providers Only)
-Replace the placeholder with your HbarSuite API key. **This is only required if you want to become a DEX provider and earn fees**:
+Replace the placeholder with your HSuite API key. **This is only required if you want to become a DEX provider and earn fees**:
 ```javascript
 const apiKey = 'YOUR_API_KEY_HERE';
 ```
@@ -175,12 +175,12 @@ npm start
 The application automatically selects from available Smart Nodes:
 
 ### Mainnet Nodes
-- 8 Smart Nodes distributed across the HbarSuite network
-- URLs: `mainnet-sn1.hbarsuite.network` through `mainnet-sn8.hbarsuite.network`
+- 8 Smart Nodes distributed across the HSuite network
+- URLs: `mainnet-sn1.hsuite.network` through `mainnet-sn8.hsuite.network`
 
 ### Testnet Nodes
 - 4 Smart Nodes for testing
-- URLs: `testnet-sn1.hbarsuite.network` through `testnet-sn4.hbarsuite.network`
+- URLs: `testnet-sn1.hsuite.network` through `testnet-sn4.hsuite.network`
 
 ## Key Features
 
