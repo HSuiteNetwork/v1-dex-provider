@@ -1,50 +1,105 @@
-# HbarSuite DEX Provider Demo
+# HSuite Programmatic Swaps - Non-Provider Implementation
 
-A Node.js demonstration application showing how to interact with HbarSuite's zero-slippage DEX (Decentralized Exchange) as a liquidity provider on the Hedera Hashgraph network.
+A comprehensive Node.js implementation for performing programmatic swaps on HSuite's zero-slippage DEX (Decentralized Exchange) using any Hedera wallet, designed for non-DEX-providers on the Hedera Hashgraph network.
 
-## Overview
+## 🌟 Branch Overview
 
-This project demonstrates how to:
-- Connect to HbarSuite's Smart Node network via WebSocket and REST API
-- Authenticate as a DEX provider using Hedera account credentials
-- Facilitate token swaps with zero slippage
-- Earn provider fees (0.3%) from swap transactions
-- Handle both mainnet and testnet environments
+This branch (`features/programmatic_swaps`) provides an **alternative implementation** for users who want to perform programmatic swaps **without becoming DEX providers**. 
 
-**Important**: This demo shows how to become a **DEX provider** - meaning you provide your own DEX service using HbarSuite's liquidity pools and earn fees on each swap. If you're building normal bots or applications that just need to interact with the pools directly, you don't need an API key or the provider authentication process.
+### Key Differences from Master Branch:
 
-## Use Cases
+| Feature | Master Branch (Providers) | This Branch (Non-Providers) |
+|---------|---------------------------|------------------------------|
+| **Target Users** | DEX service providers | Any developer/trader |
+| **API Access** | Full HTTP REST API (read/write) | WebSocket for writes, HTTP for reads |
+| **Authentication** | Provider credentials required | Standard Hedera wallet only |
+| **Fee Structure** | Earn 0.3% provider fees | Pay standard swap fees |
+| **Use Case** | Provide DEX services to others | Direct personal/bot trading |
 
-### DEX Provider (This Demo)
-- **Requires API Key**: Yes
-- **Purpose**: Provide DEX services using HbarSuite's liquidity pools
-- **Benefits**: Earn 0.3% fee on each swap you facilitate
-- **Authentication**: Required WebSocket authentication with Smart Nodes
-- **Target Users**: Businesses/developers wanting to offer DEX services
+## 🚀 What This Implementation Provides
 
-### Normal Bots/Applications
-- **Requires API Key**: No
-- **Purpose**: Direct interaction with liquidity pools for trading, arbitrage, etc.
-- **Benefits**: Access to zero-slippage swaps and pool data
-- **Authentication**: Standard Hedera account operations
-- **Target Users**: Traders, arbitrage bots, DeFi applications
+- 🔗 **WebSocket Integration**: Real-time swap execution for non-providers
+- 💱 **Direct Swaps**: Execute swaps with any Hedera wallet as operator  
+- 🌐 **Multi-Network**: Support for both Hedera mainnet and testnet
+- 🔐 **Secure**: Environment-based configuration and robust authentication
+- ⚡ **Real-time**: WebSocket-based communication for write operations
+- 🛡️ **Error Handling**: Comprehensive error catching with detailed reporting
+- 📊 **Read Access**: HTTP REST API for pool data and market information
 
-## Architecture
+**Important**: This implementation is for **non-DEX-providers** who want to perform direct swaps using their own Hedera wallets. You don't need special provider credentials - just a standard Hedera account with HBAR for transaction fees.
 
-The application consists of three main components:
+## 🎯 Use Cases & Target Audience
 
-1. **SmartNodeSocket Class**: Manages WebSocket connections to Smart Nodes
-2. **HTTP Client**: Handles REST API calls for swap operations
-3. **Main Provider Logic**: Orchestrates the authentication and swap process
+### This Branch: Non-Provider Programmatic Swaps
+- **Requires Provider Credentials**: ❌ No
+- **Purpose**: Direct swap execution for personal/business use
+- **Benefits**: Zero-slippage swaps, real-time execution, full control
+- **Authentication**: Standard Hedera wallet (any account with HBAR)
+- **API Access**: WebSocket for swaps, HTTP for pool data
+- **Target Users**: 
+  - Individual traders
+  - Trading bots and algorithms
+  - DeFi applications
+  - Arbitrage systems
+  - Any developer wanting direct swap access
 
-## Prerequisites
+### Master Branch: DEX Provider Services
+- **Requires Provider Credentials**: ✅ Yes (contact HSuite)
+- **Purpose**: Provide DEX services to end-users and earn fees
+- **Benefits**: Earn 0.3% fee on facilitated swaps, full HTTP API access
+- **Authentication**: Provider-level WebSocket authentication
+- **API Access**: Full HTTP REST API (read/write operations)
+- **Target Users**: Businesses offering DEX services to customers
 
-- Node.js (v14 or higher)
-- A Hedera account with HBAR balance for testnet/mainnet operations
-- HbarSuite API key for Smart Node access (**only required for DEX providers**)
-- Understanding of Hedera Hashgraph and token operations
+## 🏗️ Technical Architecture
 
-**Note**: The API key is only needed if you want to become a DEX provider and earn fees on swaps. For normal bots, trading applications, or direct pool interactions, no API key is required.
+This implementation uses a **hybrid approach** optimized for non-provider access:
+
+### Core Components
+
+1. **SmartNodeSocket Class**: Manages WebSocket connections for swap execution
+2. **HTTP Client**: Handles read-only operations (pool data, token info)
+3. **Transaction Management**: Orchestrates swap requests and execution
+4. **Error Handling System**: Comprehensive error catching and recovery
+
+### API Access Pattern
+
+```
+Non-Provider Access Pattern:
+├── HTTP REST API (Read-Only)
+│   ├── GET /pools/list - Available trading pools
+│   ├── GET /tokens/list - Token information  
+│   └── GET /pools/stats - Pool statistics
+│
+└── WebSocket Connection (Write Operations)
+    ├── swapPoolRequest - Create swap transaction
+    ├── swapPoolExecute - Execute signed transaction
+    └── Real-time updates and error handling
+```
+
+**Why This Approach?**
+- Non-providers don't have HTTP write access to Smart Nodes
+- WebSocket provides real-time execution for swap operations
+- HTTP remains available for data queries and pool information
+
+## 🔧 Prerequisites
+
+- **Node.js** (v14 or higher)
+- **Hedera Account**: Any Hedera account with HBAR balance for transaction fees
+- **Basic Knowledge**: Understanding of Hedera Hashgraph and token operations
+- **Environment Setup**: Ability to configure environment variables
+
+### What You DON'T Need
+- ❌ HSuite provider credentials or API keys
+- ❌ Special permissions or approvals
+- ❌ Minimum account balance requirements (beyond transaction fees)
+- ❌ Business verification or KYC processes
+
+### What You DO Need
+- ✅ Standard Hedera account (testnet or mainnet)
+- ✅ HBAR for transaction fees (typically < 0.1 HBAR per swap)
+- ✅ Private key access for transaction signing
+- ✅ Node.js development environment
 
 ## Installation
 
@@ -59,99 +114,138 @@ cd hsuite_dex_provider
 npm install
 ```
 
-## Configuration
+## ⚙️ Environment Configuration
 
-Before running the application, you need to configure your credentials in `index.js`:
+This implementation uses **environment variables** for secure credential management. No hardcoded credentials or API keys required!
 
-### 1. API Key (DEX Providers Only)
-Replace the placeholder with your HbarSuite API key. **This is only required if you want to become a DEX provider and earn fees**:
-```javascript
-const apiKey = 'YOUR_API_KEY_HERE';
+### 1. Create Environment File
+Create a `.env` file in the project root:
+
+```bash
+# HSuite Programmatic Swaps Configuration
+# Copy this template and fill in your Hedera account details
+
+# =================================================================
+# MAINNET CONFIGURATION (for production swaps)
+# =================================================================
+MAINNET_OPERATOR_ID=0.0.123456
+MAINNET_OPERATOR_PRIVATE_KEY=302e020100300506032b657004220420YOUR_MAINNET_PRIVATE_KEY
+
+# =================================================================
+# TESTNET CONFIGURATION (for development and testing)
+# =================================================================
+TESTNET_OPERATOR_ID=0.0.123456
+TESTNET_OPERATOR_PRIVATE_KEY=302e020100300506032b657004220420YOUR_TESTNET_PRIVATE_KEY
 ```
 
-If you're building normal bots or applications, you can skip the API key and authentication process.
+### 2. Security Features
+- ✅ **No API Keys Required**: Standard Hedera accounts only
+- ✅ **Environment Variables**: Credentials never hardcoded
+- ✅ **Git Protection**: `.gitignore` prevents credential commits
+- ✅ **Network Separation**: Different accounts for mainnet/testnet
 
-### 2. Operator Accounts
-Configure your Hedera accounts for both networks:
+### 3. Getting Your Credentials
+1. **Account ID**: Your Hedera account ID (format: `0.0.123456`)
+2. **Private Key**: DER-encoded hex string from your Hedera wallet
+   - Export from HashPack, Blade, or other Hedera wallet
+   - Or generate programmatically: `PrivateKey.generate().toString()`
+
+## 🚀 Usage
+
+### Quick Start
+
+```bash
+# Run on mainnet (production swaps)
+node index.js
+
+# For testnet development, modify the main() call in index.js:
+# main('testnet') instead of main('mainnet')
+```
+
+### What Happens During Execution
+
+1. **🌐 HTTP Client Setup**: Connects to Smart Node REST API for data queries
+2. **🔐 WebSocket Authentication**: Establishes authenticated connection for swaps
+3. **⚙️ Hedera Client Configuration**: Sets up transaction signing with your wallet
+4. **💱 Swap Configuration**: Defines token pair and amounts to swap
+5. **📝 Transaction Creation**: Requests swap transaction from Smart Node
+6. **✍️ Transaction Signing**: Signs transaction with your private key
+7. **🚀 Swap Execution**: Executes the swap through WebSocket
+8. **📊 Result Processing**: Reports swap results and cleans up connections
+
+### Example Swap Process
+
+The demo performs a sample swap: **5000 HSUITE → HBAR**
+
 ```javascript
-const operator = {
-    mainnet: {
-        id: 'YOUR_MAINNET_OPERATOR_ID',        // e.g., '0.0.123456'
-        private_key: 'YOUR_MAINNET_OPERATOR_PRIVATE_KEY'
+// Current demo configuration
+let swapObj = {
+    baseToken: {
+        details: { id: "0.0.786931", symbol: "HSUITE", decimals: 4 },
+        amount: { value: new Decimal(5000) }  // Spending 5000 HSUITE
     },
-    testnet: {
-        id: 'YOUR_TESTNET_OPERATOR_ID',        // e.g., '0.0.123456'
-        private_key: 'YOUR_TESTNET_OPERATOR_PRIVATE_KEY'
+    swapToken: {
+        details: { id: "HBAR", symbol: "HBAR", decimals: 8 },
+        amount: { value: null }  // Receiving calculated HBAR amount
     }
 };
 ```
 
-### 3. Final Customer Account
-For demo purposes, configure a customer account:
-```javascript
-let finalCustomer = {
-    account: 'THE_FINAL_CUSTOMER_ACCOUNT_ID',
-    privateKey: 'THE_FINAL_CUSTOMER_PRIVATE_KEY'
-};
+## 📡 API Endpoints & Communication
+
+### WebSocket Events (Write Operations)
+Non-providers use WebSocket events for swap operations:
+
+- **`swapPoolRequest`**: Creates a swap transaction
+- **`swapPoolExecute`**: Executes the signed swap transaction
+- **`authenticate`**: Handles authentication challenge/response
+
+### HTTP REST API (Read Operations)
+Available for data queries without authentication:
+
+- **`GET /pools/list`**: Fetches available token pools
+- **`GET /tokens/list`**: Retrieves token information
+- **`GET /pools/stats`**: Gets pool statistics and metrics
+
+### Authentication Flow
+```
+1. WebSocket Connection → Smart Node
+2. Smart Node → Authentication Challenge
+3. Your Wallet → Sign Challenge
+4. Smart Node → Verify & Authenticate
+5. Ready for Swap Operations
 ```
 
-## Usage
+## 🌐 Smart Node Networks
 
-### Running the Demo
+The application automatically selects from available Smart Nodes for load balancing:
 
-Execute the demo with your preferred network:
+### Mainnet Nodes (8 nodes)
+- **Production Network**: Real HBAR and token swaps
+- **URLs**: `mainnet-sn1.hsuite.network` through `mainnet-sn8.hsuite.network`
+- **Load Balancing**: Random node selection for each connection
 
-```bash
-# Run on testnet (recommended for testing)
-npm start
+### Testnet Nodes (4 nodes)
+- **Development Network**: Test HBAR and tokens for development
+- **URLs**: `testnet-sn1.hsuite.network` through `testnet-sn4.hsuite.network`
+- **Purpose**: Safe testing environment for development and debugging
 
-# The main function defaults to testnet, but you can modify it in index.js:
-# main('testnet') or main('mainnet')
-```
+### Node Selection Strategy
+- Automatic random selection for load distribution
+- Fallback and retry logic (implemented in comprehensive error handling)
+- No manual node configuration required
 
-### What the Demo Does
+## ✨ Key Features
 
-1. **Establishes Connections**:
-   - Creates HTTP client connection to a random Smart Node
-   - Establishes authenticated WebSocket connection
-
-2. **Authentication Process**:
-   - Smart Node sends authentication challenge
-   - Provider signs the challenge with their private key
-   - Smart Node validates the signature
-
-3. **Token Swap Execution**:
-   - Creates a swap request (1 HBAR → 280 HSUITE tokens in the demo)
-   - Generates unsigned transaction
-   - Customer signs the transaction (simulated)
-   - Executes the swap through the DEX
-
-## API Endpoints Used
-
-- `POST /pools/dex/swap-request`: Creates a swap transaction
-- `POST /pools/dex/swap-execute`: Executes the signed swap transaction
-- `GET /pools/list`: Fetches available token pools (mentioned but not used in demo)
-
-## Smart Node Networks
-
-The application automatically selects from available Smart Nodes:
-
-### Mainnet Nodes
-- 8 Smart Nodes distributed across the HbarSuite network
-- URLs: `mainnet-sn1.hbarsuite.network` through `mainnet-sn8.hbarsuite.network`
-
-### Testnet Nodes
-- 4 Smart Nodes for testing
-- URLs: `testnet-sn1.hbarsuite.network` through `testnet-sn4.hbarsuite.network`
-
-## Key Features
-
-- **Zero Slippage**: Guaranteed exact token amounts in swaps
-- **Provider Fees**: Earn 0.3% fee on facilitated swaps
-- **Multi-Network Support**: Works on both Hedera mainnet and testnet
-- **Real-time Communication**: WebSocket-based real-time updates
-- **Secure Authentication**: Cryptographic signature-based authentication
-- **Random Node Selection**: Automatic load balancing across Smart Nodes
+- **🎯 Zero Slippage**: Guaranteed exact token amounts in swaps
+- **💳 Direct Wallet Integration**: Use any Hedera wallet as operator
+- **🌐 Multi-Network Support**: Works on both Hedera mainnet and testnet
+- **⚡ Real-time Execution**: WebSocket-based instant swap processing
+- **🔐 Secure Authentication**: Cryptographic signature-based wallet verification
+- **🔄 Load Balancing**: Automatic distribution across Smart Nodes
+- **🛡️ Comprehensive Error Handling**: Detailed error reporting and recovery
+- **📊 Pool Data Access**: HTTP API for market data and analytics
+- **🚀 Production Ready**: Environment-based configuration and security
 
 ## Security Considerations
 
@@ -176,50 +270,90 @@ The application includes error handling for:
 - **socket.io-client**: WebSocket client for real-time communication
 - **decimal.js**: Precise decimal arithmetic for token amounts
 
-## Development
+## 👨‍💻 Development & Customization
 
-To modify the swap parameters, edit the `swapObj` in the main function:
+### Customizing Swap Parameters
+
+Edit the `swapObj` in the main function to change token pairs and amounts:
 
 ```javascript
+// Example 1: Exact Input Swap (spend exact amount)
 let swapObj = {
     baseToken: {
-        details: {
-            id: "HBAR",           // Base token (HBAR)
-            symbol: "HBAR",
-            decimals: 8
-        },
-        amount: {
-            value: new Decimal(1) // Amount to swap
-        }                    
+        details: { id: "HBAR", symbol: "HBAR", decimals: 8 },
+        amount: { value: new Decimal(10) }  // Spend exactly 10 HBAR
     },
     swapToken: {
-        details: {
-            id: "0.0.786931",    // Target token ID
-            symbol: "HSUITE",
-            decimals: 4
-        },
-        amount: {
-            value: new Decimal(280) // Expected output amount
-        }
+        details: { id: "0.0.786931", symbol: "HSUITE", decimals: 4 },
+        amount: { value: null }  // Receive calculated amount
+    }
+};
+
+// Example 2: Exact Output Swap (receive exact amount)
+let swapObj = {
+    baseToken: {
+        details: { id: "0.0.786931", symbol: "HSUITE", decimals: 4 },
+        amount: { value: null }  // Spend calculated amount
+    },
+    swapToken: {
+        details: { id: "HBAR", symbol: "HBAR", decimals: 8 },
+        amount: { value: new Decimal(5) }  // Receive exactly 5 HBAR
     }
 };
 ```
 
-## Support
+### Adding New Features
 
-For questions or issues:
-- Check HbarSuite documentation
-- Review Hedera SDK documentation
-- Ensure proper network configuration and API key validity
+1. **Pool Monitoring**: Use HTTP client to fetch real-time pool data
+2. **Price Tracking**: Implement price monitoring and alerts
+3. **Multi-hop Swaps**: Chain multiple swaps for complex routes
+4. **Automated Trading**: Build trading bots with the swap functions
 
-## License
+### Testing Strategy
+
+```bash
+# Always test on testnet first
+# Modify main('mainnet') to main('testnet') in index.js
+node index.js
+```
+
+## 🤝 Support & Resources
+
+### Getting Help
+- **HSuite Documentation**: Official API and integration guides
+- **Hedera SDK Documentation**: [docs.hedera.com](https://docs.hedera.com/)
+- **Community Support**: HSuite developer community
+- **Issue Reporting**: GitHub issues for bugs and feature requests
+
+### Useful Resources
+- **Hedera Portal**: [portal.hedera.com](https://portal.hedera.com/) - Account management
+- **Testnet Faucet**: Free testnet HBAR for development
+- **HashScan**: Transaction explorer for Hedera networks
+
+## 📄 License
 
 ISC - See package.json for details
 
-## Author
+## 👥 Author
 
-HbarSuite
+HSuite Development Team
 
 ---
 
-**Note**: This is a demonstration application. For production use, implement proper error handling, logging, configuration management, and security practices. 
+## 🔀 Branch Information
+
+**Current Branch**: `features/programmatic_swaps`
+- **Purpose**: Non-provider programmatic swaps
+- **Target**: Individual developers, traders, bots
+- **Access**: Standard Hedera accounts (no special credentials)
+
+**Master Branch**: `master`
+- **Purpose**: DEX provider services
+- **Target**: Businesses offering DEX services
+- **Access**: Requires HSuite provider credentials
+
+---
+
+**⚠️ Production Notice**: This implementation includes production-ready error handling, security practices, and comprehensive logging. However, always conduct thorough testing on testnet before mainnet deployment.
+
+**💡 Developer Tip**: This branch provides a complete foundation for non-provider swap integrations. The modular design allows easy customization for trading bots, arbitrage systems, and DeFi applications. 
